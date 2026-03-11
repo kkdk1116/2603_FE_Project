@@ -27,7 +27,7 @@ section h3 {
 header {
   width: 100%;   /* 너비 100% */
   height: 100vh; /* 뷰포트 높이 */
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(images/header-bg.jpg) center no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(images/header-bg2.jpg) center no-repeat;
   background-size: cover; 
   padding: 10px 8%;  /* 상하 10px, 좌우 8% */
   position: relative; /* 상대 위치 */
@@ -40,7 +40,7 @@ nav {
 }
 nav .logo { 
   font-size:32px;   /* 글자 크기 */
-  color: #db0001; /* 글자색 */
+  color: #c9adad; /* 글자색 */
   cursor: pointer;  /* 커서 포인터 */
   text-decoration: none; /* 밑줄, 취소선 제거 */
   font-weight: bold;  /* 글자를 굵게 표시 */
@@ -140,6 +140,13 @@ nav button, .auth-btn {
   font-size: 24px; 
   cursor: pointer; 
 }
+.modal-content img {
+  width: 100%;
+  border-radius: 10px;
+}
+.modal-content img:hover{
+  transform: scale(1.05);
+}
 .submit-btn { 
   width: 100%; 
   background: #db0001; 
@@ -164,7 +171,8 @@ nav button, .auth-btn {
   line-height: 1.4; /* 줄 높이 */
   font-weight: 600; /* 글자 굵기 */
   max-width: 650px;  /* 최대 너비 */
-  margin-bottom: 20px; /* 하단 마진 */
+  /* margin-bottom: 20px;  하단 마진 */
+  margin: 0 auto 20px;
 }
 .header-content h3 {
   font-weight: 400;  /* 글자 굵기 */
@@ -181,12 +189,19 @@ nav button, .auth-btn {
   margin-left: auto; 
   margin-right: auto; 
 }
-.add-email input {   /* .add-email의 input 요소 */
+.input-wrapper {
+  position: relative;
+  flex: 1;           /* 기존 input에서 이동 */
+  margin-left: 20px; /* 기존 input에서 이동 */
+  display: flex;
+}
+
+.add-email input { /* .add-email의 input 요소 */
   border: 0;  /* 테두리 없음 */
   outline: 0; /* 아웃라인 없음 */
-  flex: 1;  /* 플렉스 박스 아이템의 크기를 설정 */
-  margin-left: 20px; /* 왼쪽 마진 */
-  padding: 15px 0; 
+  width: 100%;       /* flex: 1 대신 width 100% 사용 */
+  padding: 15px 0;
+  padding-right: 30px; /* X 버튼이 텍스트를 가리지 않도록 우측 여백 확보 */
 }
 .add-email button { 
   border: 0; /* 테두리 없음 */
@@ -466,4 +481,282 @@ footer {
     font-size: 18px;
     margin-bottom: 20px;
   }
+}
+
+/* 이메일 입력창 X 버튼 (기존 버튼 스타일 강제 초기화) */
+.clear-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent !important; /* 기존 빨간색 배경 강제 투명화 */
+    color: #333 !important; /* X 아이콘 색상 지정 */
+    border: none;
+    padding: 0 !important; /* 기존 버튼 여백 강제 제거 */
+    width: auto !important;
+    min-width: 0 !important;
+    cursor: pointer;
+    display: none; /* 기본 상태 숨김 */
+}
+
+/* 텍스트 입력 시 X 버튼 표시 */
+.input-wrapper.has-value .clear-btn {
+    display: block;
+}
+
+
+/* 화면 이동 버튼 스타일 수정 (우측 중앙 고정, 크기 확대) */
+.scroll-btns {
+    position: fixed;
+    top: 50%; /* 화면 세로 중앙에 위치 */
+    transform: translateY(-50%); /* 정확한 세로 중앙 정렬을 위한 보정 */
+    right: 30px; /* 우측 여백 */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 버튼 사이의 간격 확대 */
+    z-index: 1000;
+}
+
+.scroll-btns button {
+    width: 60px; /* 기존 40px에서 60px로 버튼 너비 확대 */
+    height: 60px; /* 기존 40px에서 60px로 버튼 높이 확대 */
+    border-radius: 50%;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 24px; /* 내부 폰트(아이콘) 크기 확대 */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* 그림자 효과 강화로 시인성 확보 */
+    transition: background-color 0.3s ease;
+}
+
+.scroll-btns button:hover {
+    background-color: #555;
+}
+
+.card {
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+/* 방문자 표시 */
+.visitor-box {
+  position: absolute;
+  right: 40px;
+  bottom: 30px;
+  color: #fff;
+  font-size: 14px;
+  background: rgba(0,0,0,0.4);
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+/* 좋아요 버튼 (배너 버튼과 동일 스타일) */
+#like{
+  border: 0;
+  outline: 0;
+  border-radius: 5px;
+  background:rgba(128,128,128,0.4);
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* 버튼 hover 효과 */
+#like:hover{
+  background:rgba(128,128,128, 0.6);
+}
+
+/* 좋아요 숫자 강조 */
+#count{
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+/* 출석 리셋 버튼 */
+.reset-btn {
+  background: none;
+  border: 1px solid #4A3B32;
+  color: #4A3B32;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: 0.3s;
+}
+.reset-btn:hover {
+  background-color: #4A3B32;
+  color: #FDF6E3;
+}
+
+
+/* 셀렉트 박스와 말풍선 컨테이너 */
+.select-container {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  margin-top: 20px;
+}
+
+.select-container .select-menu {
+  margin-top: 0; /* 기존 마진 제거 */
+}
+
+/* 말풍선 기본 스타일 */
+.roast-bubble {
+  position: absolute;
+  left: 100%; /* 셀렉트 박스 우측에 배치 */
+  margin-left: 20px;
+  background-color: #87b355; 
+  color: #fff;
+  padding: 15px 30px 15px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  width: max-content;
+  max-width: 350px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+                                                                                                                                                                 
+/* 말풍선 좌측 꼬리 생성 */
+.roast-bubble::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  transform: translateY(-50%);
+  border-width: 10px 10px 10px 0;
+  border-style: solid;
+  border-color: transparent #db0001 transparent transparent;
+}
+
+/* 말풍선 닫기(X) 버튼 */
+.bubble-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #fff;
+}
+
+/* 요소 숨김 상태 클래스 */
+.roast-bubble.hidden {
+  display: none;
+  opacity: 0;
+}
+
+/* 반응형 처리: 화면이 작을 때 말풍선을 셀렉트 박스 아래로 이동 */
+@media only screen and (max-width: 768px) {
+  .select-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .roast-bubble {
+    left: 0;
+    top: 100%;
+    margin-left: 0;
+    margin-top: 15px;
+  }
+  /* 말풍선 꼬리를 상단으로 변경 */
+  .roast-bubble::before {
+    top: -10px;
+    left: 20px;
+    transform: none;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #db0001 transparent;
+  }
+}
+
+/* ---- 라이트 모드 스타일 ---- */
+/* body에 .light-mode 클래스가 추가될 때 하위 요소들의 스타일을 변경합니다. */
+
+body.light-mode {
+  background-color: #fdf6e3; 
+  color: #333; 
+}
+
+body.light-mode header {
+  background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url(images/header-bg.jpg) center no-repeat;
+  background-size: cover; 
+}
+
+body.light-mode nav .logo {
+  color: #651c3d;
+}
+
+body.light-mode #user-status {
+  color: #555;
+}
+
+body.light-mode .modal-content {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+body.light-mode .modal-content input {
+  background: #f9f9f9;
+  border: 1px solid #aaa;
+  color: #333;
+}
+
+body.light-mode .banner-content {
+  background: linear-gradient(to right, #e2c2c6 0%, #d4b4b7 60%);
+}
+
+body.light-mode #banner p,
+body.light-mode .membership-content p,
+body.light-mode #choice p {
+  color: #555;
+}
+
+body.light-mode .membership-content {
+  background: linear-gradient(to right, rgba(226, 194, 198, 0.9) 0%, rgba(212, 180, 183, 0.5) 60%), url(images/membership-bg.png) no-repeat right center;
+}
+
+body.light-mode .card {
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+body.light-mode .accordion li label {
+  background: #eee;
+  color: #333;
+}
+
+body.light-mode .accordion .content {
+  background: #fafafa;
+  color: #333;
+}
+
+body.light-mode footer {
+  border-top: 1px solid #ddd;
+}
+
+body.light-mode .col h2, 
+body.light-mode .col h3, 
+body.light-mode .footer-info, 
+body.light-mode .copyright, 
+body.light-mode .footer-content p,
+body.light-mode .footer-content a,
+body.light-mode .socials a {
+  color: #333;
+}
+
+body.light-mode .select-menu {
+  border: 1px solid #333;
+  color: #333;
+}
+
+body.light-mode .select-menu option {
+  background-color: #fff;
+  color: #333;
 }
