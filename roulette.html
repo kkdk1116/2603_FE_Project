@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>오늘의 행운의 커피 룰렛</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #FDF6E3;
+            color: #4A3B32;
+            font-family: 'Pretendard', sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .content {
+            flex: 1;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 26px;
+            margin-bottom: 10px;
+            color: #651C3D;
+        }
+        p {
+            font-size: 15px;
+            margin-bottom: 30px;
+            color: #6A5A4D;
+        }
+        /* 룰렛 컨테이너 및 휠 디자인 */
+        .roulette-container {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            margin-bottom: 30px;
+        }
+        .pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid #db0001;
+            z-index: 10;
+        }
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #651C3D;
+            background: conic-gradient(
+                #EFE6DD 0deg 120deg, 
+                #D4C4B7 120deg 240deg, 
+                #CDB4A7 240deg 360deg
+            );
+            transition: transform 3s cubic-bezier(0.1, 0.7, 0.1, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        /* 룰렛 텍스트 영역 분할 및 회전 배치 */
+        .segment {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            color: #4A3B32;
+        }
+        .segment-1 { transform: rotate(60deg); }
+        .segment-2 { transform: rotate(180deg); }
+        .segment-3 { transform: rotate(300deg); }
+        
+        .segment-text {
+            padding-top: 25px;
+        }
+        .spin-btn {
+            background-color: #651C3D;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .spin-btn:hover:not(:disabled) {
+            background-color: #4A142D;
+        }
+        .spin-btn:disabled {
+            background-color: #cccccc;
+            color: #777777;
+            cursor: not-allowed;
+        }
+        .footer {
+            background-color: #EFE6DD;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            color: #4A3B32;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Lucky Coffee Roulette</h1>
+        <p>오늘의 취향 저격 커피를 확인해 보세요!</p>
+        
+        <div class="roulette-container">
+            <div class="pointer"></div>
+            <div class="wheel" id="wheel">
+                <div class="segment segment-1"><div class="segment-text">너티드</div></div>
+                <div class="segment segment-2"><div class="segment-text">비비드</div></div>
+                <div class="segment segment-3"><div class="segment-text">다크</div></div>
+            </div>
+        </div>
+        
+        <button class="spin-btn" id="spin-btn" onclick="spinWheel()">룰렛 돌리기</button>
+    </div>
+    
+    <div class="footer">
+        <button class="close-btn" onclick="window.close()">닫기 [X]</button>
+    </div>
+
+    <script>
+        let currentRotation = 0;
+        let isSpinning = false;
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            const wheel = document.getElementById('wheel');
+            const btn = document.getElementById('spin-btn');
+            
+            // 버튼 비활성화
+            btn.disabled = true;
+
+            // 추가 회전 각도 생성 (기본 5바퀴 + 랜덤 각도)
+            const randomDegree = Math.floor(Math.random() * 360) + 1800; 
+            currentRotation += randomDegree;
+            
+            // 휠 회전
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+            // 애니메이션 종료 시간(3초)에 맞춰 결과 출력
+            setTimeout(() => {
+                isSpinning = false;
+                btn.disabled = false;
+                
+                // 최종 각도에 따른 위치 계산
+                const actualDegree = (360 - (currentRotation % 360)) % 360;
+                let result = '';
+
+                if (actualDegree >= 0 && actualDegree < 120) {
+                    result = '너티드 커피';
+                } else if (actualDegree >= 120 && actualDegree < 240) {
+                    result = '비비드 커피';
+                } else {
+                    result = '다크 커피';
+                }
+
+                alert(`축하합니다! 오늘의 추천 커피는 [${result}] 입니다.`);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

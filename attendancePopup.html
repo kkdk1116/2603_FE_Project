@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>스위커 출석 체크</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #FDF6E3; 
+            color: #4A3B32; 
+            font-family: 'Pretendard', sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .content {
+            flex: 1;
+            padding: 40px 20px;
+        }
+        h1 {
+            font-size: 26px;
+            margin-bottom: 15px;
+            color: #651C3D; 
+        }
+        p {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #6A5A4D;
+        }
+        .stamp-board {
+            background: #fff;
+            border: 2px dashed #D4C4B7;
+            border-radius: 15px;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .check-btn {
+            background-color: #651C3D;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .check-btn:hover:not(:disabled) {
+            background-color: #4A142D;
+        }
+        /* 비활성화된 버튼 스타일 */
+        .check-btn:disabled {
+            background-color: #cccccc;
+            color: #777777;
+            cursor: not-allowed;
+        }
+        .footer {
+            background-color: #EFE6DD;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: flex-end; /* 우측 정렬로 변경 */
+            align-items: center;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            color: #4A3B32;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Daily Coffee Check</h1>
+        <p>매일 스위커에 방문하시고<br>특별한 커피 혜택을 모아보세요.</p>
+        
+        <div class="stamp-board" id="stamp-board">
+            ☕ 오늘의 출석을 완료해 주세요!
+        </div>
+        
+        <button class="check-btn" id="check-btn" onclick="attend()">출석하기</button>
+    </div>
+
+    <div class="footer">
+        <button class="reset-btn" onclick="resetAttendance()">초기화</button>
+        <button class="close-btn" onclick="window.close()">닫기 [X]</button>
+    </div>
+
+    <script>
+        // 화면이 로드될 때 출석 상태 확인
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toLocaleDateString();
+            const lastAttend = localStorage.getItem('lastAttendanceDate');
+
+            // 오늘 이미 출석했다면 UI를 완료 상태로 변경
+            if (lastAttend === today) {
+                setCompletedUI();
+            }
+        });
+
+        // 출석하기 버튼 동작
+        function attend() {
+            const today = new Date().toLocaleDateString();
+            
+            // 로컬 스토리지에 오늘 날짜 저장
+            localStorage.setItem('lastAttendanceDate', today);
+            
+            // 화면 UI 변경
+            setCompletedUI();
+            alert('오늘의 출석이 완료되었습니다!');
+        }
+        
+        // 출석 완료 상태 UI 변경 함수
+        function setCompletedUI() {
+            const btn = document.getElementById('check-btn');
+            const board = document.getElementById('stamp-board');
+            
+            // 오늘 날짜 문자열 생성
+            const todayString = new Date().toLocaleDateString();
+
+            btn.innerText = '오늘 출석 완료';
+            btn.disabled = true; // 버튼 비활성화
+            
+            // 백틱(`)을 사용하여 날짜 변수(todayString) 삽입
+            board.innerHTML = `☕ 오늘(${todayString}) 출석이 완료되었습니다!<br><br>내일 다시 방문해 주세요.`;
+            board.style.backgroundColor = '#EFE6DD';
+        }
+
+        function resetAttendance() {
+            // 로컬 스토리지 데이터 삭제
+            localStorage.removeItem('lastAttendanceDate');
+            
+            // 화면 UI 초기화
+            const btn = document.getElementById('check-btn');
+            const board = document.getElementById('stamp-board');
+
+            btn.innerText = '출석하기';
+            btn.disabled = false; // 버튼 활성화
+            
+            board.innerHTML = '☕ 오늘의 출석을 완료해 주세요!';
+            board.style.backgroundColor = '#fff';
+
+            alert('출석 기록이 초기화되었습니다.');
+        }
+    </script>
+
+</body>
+</html>
