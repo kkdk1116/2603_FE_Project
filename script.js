@@ -235,6 +235,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 let visitCount = Number(localStorage.getItem("visit")) || 0;
 
+visitCount++;
+
 localStorage.setItem("visit", visitCount);
 document.querySelector("#visit").innerText = visitCount;
 
@@ -344,3 +346,4 @@ coffeCard.forEach(function(card){
     alert(`${name}를 추천합니다`);
   });
 });
+
