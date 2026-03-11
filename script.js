@@ -335,3 +335,12 @@ accordionLabels.forEach(label => {
         }
     });
 });
+
+// 미션 5_카드 선택 시 추천 메시지 출력
+const coffeCard = document.querySelectorAll(".card")
+coffeCard.forEach(function(card){
+  card.addEventListener("click", function() {
+    const name = card.querySelector("h3").innerHTML;
+    alert(`${name}를 추천합니다`);
+  });
+});
